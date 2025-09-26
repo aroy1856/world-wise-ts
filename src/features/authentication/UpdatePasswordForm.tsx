@@ -6,14 +6,22 @@ import Input from "../../ui/Input";
 
 import { useUpdateUser } from "./useUpdateUser";
 
+interface UpdatePasswordFormData {
+  fullName: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
 function UpdatePasswordForm() {
-  const { register, handleSubmit, formState, getValues, reset } = useForm();
+  const { register, handleSubmit, formState, getValues, reset } =
+    useForm<UpdatePasswordFormData>();
   const { errors } = formState;
 
   const { updateUser, isUpdating } = useUpdateUser();
 
   function onSubmit({ password }: { password: string }) {
-    updateUser({ password }, { onSuccess: reset });
+    updateUser({ password }, { onSuccess: () => reset() });
   }
 
   return (
@@ -54,7 +62,7 @@ function UpdatePasswordForm() {
         />
       </FormRow>
       <FormRow>
-        <Button onClick={reset} type="reset" variation="secondary">
+        <Button onClick={() => reset()} type="reset" variation="secondary">
           Cancel
         </Button>
         <Button disabled={isUpdating}>Update password</Button>

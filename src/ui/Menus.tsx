@@ -13,7 +13,7 @@ import { useOutSideClick } from "../hooks/useOutsideClick";
 const StyledMenu = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   position: relative;
 `;
 
