@@ -17,5 +17,5 @@ export function useRecentBookings() {
     queryKey: ["booking", `recent-${days}-days`],
   });
 
-  return { isPending, bookings, error };
+  return { isPending, bookings, error, days };
 }
