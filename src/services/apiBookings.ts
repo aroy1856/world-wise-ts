@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
-import type { Booking, BookingWithRelations } from "./types";
+import type { Activity, Booking, BookingWithRelations } from "./types";
 
 interface GetAllBookingsFilter {
   field: string;
@@ -58,7 +58,7 @@ export async function getAllBookings({
   const { data, count, error } = await query;
 
   if (error) {
-    console.log(error.message);
+    throw new Error(error.message);
   }
 
   return { data: (data ?? []) as BookingWithRelations[], count };
@@ -75,7 +75,6 @@ export async function getBooking(id: number | string) {
     console.error(error);
     throw new Error("Booking not found");
   }
-  console.log(data);
 
   return data as BookingWithRelations;
 }
@@ -118,7 +117,7 @@ export async function getStaysAfterDate(date: string) {
 }
 
 // Activity means that there is a check in or a check out today
-export async function getStaysTodayActivity() {
+export async function getStaysTodayActivity(): Promise<Activity[]> {
   const { data, error } = await supabase
     .from("bookings")
     .select("*, guests(fullName, nationality, countryFlag)")
@@ -135,13 +134,7 @@ export async function getStaysTodayActivity() {
     console.error(error);
     throw new Error("Bookings could not get loaded");
   }
-  return data as (Booking & {
-    guests: {
-      fullName: string;
-      nationality: string;
-      countryFlag: string;
-    };
-  })[];
+  return data;
 }
 
 export async function updateBooking(id: string, obj: object) {

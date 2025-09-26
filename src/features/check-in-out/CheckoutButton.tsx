@@ -1,13 +1,20 @@
 import Button from "../../ui/Button";
+import { useCheckout } from "./useCheckout";
 
 interface CheckoutButtonProps {
   bookingId: string;
 }
 
 function CheckoutButton({ bookingId }: CheckoutButtonProps) {
-  console.log(bookingId);
+  const { checkout, isPending } = useCheckout();
+
   return (
-    <Button variation="primary" size="small">
+    <Button
+      variation="primary"
+      size="small"
+      onClick={() => checkout(bookingId)}
+      disabled={isPending}
+    >
       Check out
     </Button>
   );

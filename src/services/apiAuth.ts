@@ -17,8 +17,6 @@ export async function login({
     throw new Error("Supabase could not log in user");
   }
 
-  console.log(data);
-
   return data;
 }
 

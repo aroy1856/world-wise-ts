@@ -103,3 +103,11 @@ export type SettingInsertUpdate = {
 export type BookingWithRelations = Booking & { cabins: Cabin } & {
   guests: Guest;
 };
+
+export interface Activity extends Booking {
+  guests: {
+    fullName: string;
+    nationality: string;
+    countryFlag: string;
+  };
+}

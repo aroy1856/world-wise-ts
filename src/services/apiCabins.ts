@@ -5,7 +5,7 @@ export async function getCabins() {
   const { data, error } = await supabase.from("cabins").select("*");
 
   if (error) {
-    console.log(error.message);
+    throw new Error(error.message);
   }
 
   return data as Cabin[];
@@ -15,8 +15,7 @@ export async function deleteCabin(id: number | string) {
   const { error } = await supabase.from("cabins").delete().eq("id", id);
 
   if (error) {
-    console.log(error.message);
-    throw new Error("Could not delete cabin");
+    throw new Error(error.message);
   }
 }
 
