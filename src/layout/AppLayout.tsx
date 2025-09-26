@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 import styled from "styled-components";
 
 const StyledMain = styled.main`
-  background-color: var(--color-gray-50);
+  background-color: var(--color-grey-50);
   padding: 4.8rem 4rem 6rem;
   overflow: scroll;
 `;

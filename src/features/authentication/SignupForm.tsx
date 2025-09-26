@@ -3,6 +3,8 @@ import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
+import { useSignUp } from "./useSignup";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 // Email regex: /\S+@\S+\.\S+/
 
@@ -13,14 +15,22 @@ interface SignupFormData {
   passwordConfirm: string;
 }
 
-function onSubmit(data: SignupFormData) {
-  console.log(data);
-}
-
 function SignupForm() {
-  const { register, formState, handleSubmit, getValues } =
+  const { register, formState, handleSubmit, getValues, reset } =
     useForm<SignupFormData>();
   const { errors } = formState;
+  const { signUp, isSigningIp } = useSignUp();
+
+  function onSubmit(data: SignupFormData) {
+    signUp(
+      { fullName: data.fullName, email: data.email, password: data.password },
+      {
+        onSettled: () => {
+          reset();
+        },
+      }
+    );
+  }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -31,6 +41,7 @@ function SignupForm() {
           {...register("fullName", {
             required: "This field is required",
           })}
+          disabled={isSigningIp}
         />
       </FormRow>
 
@@ -45,6 +56,7 @@ function SignupForm() {
               message: "Please provide a valid email address",
             },
           })}
+          disabled={isSigningIp}
         />
       </FormRow>
 
@@ -62,6 +74,7 @@ function SignupForm() {
               message: "Password must be at least 8 characters",
             },
           })}
+          disabled={isSigningIp}
         />
       </FormRow>
 
@@ -74,15 +87,16 @@ function SignupForm() {
             validate: (val) =>
               val === getValues().password || "Passwords need to match",
           })}
+          disabled={isSigningIp}
         />
       </FormRow>
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" disabled={isSigningIp}>
           Cancel
         </Button>
-        <Button>Create new user</Button>
+        <Button>{isSigningIp ? <SpinnerMini /> : "Create new user"}</Button>
       </FormRow>
     </Form>
   );
